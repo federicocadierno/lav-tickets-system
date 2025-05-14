@@ -44,6 +44,7 @@
                         Logout
                     </button>
                     <a href="{{ route('tickets.create') }}">Create a Ticket</a>
+                    <a href="{{ route('notifications.index') }}">Notifications</a>
 
                 </form>
             @else

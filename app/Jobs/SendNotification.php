@@ -6,18 +6,22 @@ use App\Models\Tickets;
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Foundation\Bus\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+
 use Illuminate\Support\Facades\Log;
 
 class SendNotification implements ShouldQueue
 {
-    use Queueable;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * Create a new job instance.
      */
     public function __construct(private Tickets $ticket)
     {
-        //
+        
     }
 
     /**
@@ -25,11 +29,8 @@ class SendNotification implements ShouldQueue
      */
     public function handle(): void
     {
-        $user = User::where('is_agent', '1')
-        ->first();
+        $user = User::where('email', 'sebas@test.com')->first();
 
-        Log::info('User registration successful', $user->toArray());
-        
         $user->notify(new \App\Notifications\Tickets(
             $this->ticket,
             ['database']

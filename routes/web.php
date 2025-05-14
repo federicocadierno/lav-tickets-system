@@ -46,3 +46,6 @@ Route::put('/tickets/{ticket}', [TicketsController::class ,'update'])->name('tic
 Route::get('/tickets/{id}/edit', [TicketsController::class, 'edit'])->name('tickets.edit');
 Route::delete('/tickets/{id}/delete', [TicketsController::class, 'destroy'])->name('tickets.delete');
 Route::get('/tickets/{id}/show', [TicketsController::class, 'show'])->name('tickets.show');
+
+Route::get('/notifications', [\App\Http\Controllers\NotificationsController::class, 'notifications'])->name('notifications.index');
+Route::get('/notifications/{databaseNotification}', [\App\Http\Controllers\NotificationsController::class, 'notification'])->name('notifications.show');

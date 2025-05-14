@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\SendNotification;
 use Illuminate\Http\Request;
-use App\Models\{Tickets, Documents};
+use App\Models\{Tickets, Documents, User};
 use Illuminate\Support\Facades\Auth;
 
 class TicketsController extends Controller
@@ -76,8 +76,7 @@ class TicketsController extends Controller
             'status' => $request->input('status'),
         ]);
 
-        SendNotification::dispatch($ticket);
-
+        
         
         if ($request->hasFile('document')) {
             
@@ -101,6 +100,7 @@ class TicketsController extends Controller
                 // call a job to create a notification
         // pass the ticket id to the job and the status 
 
+        SendNotification::dispatch($ticket);
 
 
         return redirect()->route('tickets.index');
