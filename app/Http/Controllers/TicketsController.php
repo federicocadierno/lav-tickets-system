@@ -41,7 +41,7 @@ class TicketsController extends Controller
         ]);
 
 
-        //SendNotification::dispatch($ticket);
+        SendNotification::dispatch($ticket);
 
         // call a job to create a notification
         // pass the ticket id to the job and the status 
@@ -66,8 +66,8 @@ class TicketsController extends Controller
             'country_of_origin_destination' => 'required|string',
         ]);
 
-        $team = Tickets::find($id);
-        $team->update([
+        $ticket = Tickets::find($id);
+        $ticket->update([
             'name' => $request->input('name'),
             'type' => $request->input('type'),
             'mode_of_transport' => $request->input('mode_of_transport'),
@@ -75,6 +75,8 @@ class TicketsController extends Controller
             'country_of_origin_destination' => $request->input('country_of_origin_destination'),
             'status' => $request->input('status'),
         ]);
+
+        SendNotification::dispatch($ticket);
 
         
         if ($request->hasFile('document')) {
@@ -86,7 +88,7 @@ class TicketsController extends Controller
                 $filename = $document->store('documents', 'public');    
                 //dd($filename);
                 Documents::create([
-                    'doc_id' => $team->id,
+                    'doc_id' => $ticket->id,
                     'doc_name' => $filename
                 ]);
             }

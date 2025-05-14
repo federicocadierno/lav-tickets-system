@@ -52,7 +52,7 @@ services:
         ports:
             - '${FORWARD_REDIS_PORT:-6379}:6379'
         volumes:
-            - ./data/redis:/data
+            - './data/redis:/data'
         networks:
             - sail
         healthcheck:
@@ -61,7 +61,7 @@ services:
                 - redis-cli
                 - ping
             retries: 3
-            timeout: 5s        
+            timeout: 5s
 networks:
     sail:
         driver: bridge

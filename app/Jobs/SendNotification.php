@@ -6,6 +6,7 @@ use App\Models\Tickets;
 use App\Models\User;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Support\Facades\Log;
 
 class SendNotification implements ShouldQueue
 {
@@ -24,8 +25,11 @@ class SendNotification implements ShouldQueue
      */
     public function handle(): void
     {
-        $user = User::where('email', 'rodrigo@mail.com')
+        $user = User::where('is_agent', '1')
         ->first();
+
+        Log::info('User registration successful', $user->toArray());
+        
         $user->notify(new \App\Notifications\Tickets(
             $this->ticket,
             ['database']
