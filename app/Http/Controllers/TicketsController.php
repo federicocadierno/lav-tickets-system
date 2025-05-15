@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\SendNotification;
 use Illuminate\Http\Request;
-use App\Models\{Tickets, Documents};
+use App\Models\{Tickets, Documents, User};
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -54,11 +54,9 @@ class TicketsController extends Controller
           
         }
 
-
-        SendNotification::dispatch($ticket);
-
         // call a job to create a notification
         // pass the ticket id to the job and the status 
+        SendNotification::dispatch($ticket,"New Ticket Created", true);
 
         return redirect()->route('tickets.index');
 
@@ -108,7 +106,7 @@ class TicketsController extends Controller
                 // call a job to create a notification
         // pass the ticket id to the job and the status 
 
-        SendNotification::dispatch($ticket);
+        SendNotification::dispatch($ticket,"Ticket Updated", false);
 
 
         return redirect()->route('tickets.index');

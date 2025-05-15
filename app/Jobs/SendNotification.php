@@ -19,9 +19,11 @@ class SendNotification implements ShouldQueue
     /**
      * Create a new job instance.
      */
-    public function __construct(private Tickets $ticket)
+    public function __construct(
+        private Tickets $ticket, 
+        private string $subject,
+        private bool $toAgent = false)
     {
-        
     }
 
     /**
@@ -29,11 +31,30 @@ class SendNotification implements ShouldQueue
      */
     public function handle(): void
     {
-        $user = User::where('email', 'sebas@test.com')->first();
+        if($this->toAgent) {
+            Log::info('after update tickte to agent');
+                
+            $users = User::where('is_agent', true)->get();
+            foreach($users as $user) {
+                $user->notify(new \App\Notifications\Tickets(
+                    $this->ticket,
+                    $this->subject,
+                    ['database']
+                ));
+            }
+        } else {
+            Log::info('after update tickte to user');
 
-        $user->notify(new \App\Notifications\Tickets(
-            $this->ticket,
-            ['database']
-        ));
+            $user = User::where('id', $this->ticket->user_id)->first();
+
+            
+            $user->notify(new \App\Notifications\Tickets(
+                $this->ticket,
+                $this->subject,
+                ['database']
+            ));
+        }
+        
+        
     }
 }
