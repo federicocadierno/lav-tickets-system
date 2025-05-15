@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Jobs\SendNotification;
 use Illuminate\Http\Request;
-use App\Models\{Tickets, Documents, User};
+use App\Models\{Tickets, Documents};
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+
 
 class TicketsController extends Controller
 {
@@ -39,6 +41,18 @@ class TicketsController extends Controller
             'country_of_origin_destination' => $request->input('country_of_origin_destination'),
             'status' => 'New',
         ]);
+
+        if ($request->hasFile('document')) {
+            $documents = $request->file('document');
+            foreach ($documents as $document) {
+                $filename = $document->store('documents', 'public');    
+                Documents::create([
+                    'ticket_id' => $ticket->id,
+                    'doc_name' => $filename
+                ]);
+            }
+          
+        }
 
 
         SendNotification::dispatch($ticket);
@@ -79,20 +93,14 @@ class TicketsController extends Controller
         
         
         if ($request->hasFile('document')) {
-            
-            
             $documents = $request->file('document');
-            //dd($documents);
             foreach ($documents as $document) {
                 $filename = $document->store('documents', 'public');    
-                //dd($filename);
                 Documents::create([
-                    'doc_id' => $ticket->id,
+                    'ticket_id' => $ticket->id,
                     'doc_name' => $filename
                 ]);
             }
-    
-        
           
         }
 
@@ -104,6 +112,14 @@ class TicketsController extends Controller
 
 
         return redirect()->route('tickets.index');
+    }
+
+    public function download($fileId) {
+
+        $file = Documents::findOrFail($fileId);
+        $filename = $file->doc_name;
+        return Storage::disk('public')->download($filename);      
+
     }
 
     public function destroy(int $id){

@@ -12,14 +12,15 @@
             flex-direction: column;
         }
         main {
-            width: 800px;
+            width: 1200px;
             margin: 50px auto;
             padding: 20px;
             background-color: #fff;
             border-radius: 5px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             display: flex;
-            justify-content: center;
+            align-items: center;
+            flex-direction: column
         }
         form {
             display: flex;
@@ -42,11 +43,12 @@
                     <button type="submit" class="dropdown-item">
                         <i class="fa fa-sign-out-alt"></i>
                         Logout
-                    </button>
-                    <a href="{{ route('tickets.create') }}">Create a Ticket</a>
-                    <a href="{{ route('notifications.index') }}">Notifications</a>
-
+                    </button>                    
                 </form>
+                <a href="{{ route('tickets.create') }}">Create a Ticket</a>
+                <a href="{{ route('tickets.index') }}">List of Ticket</a>
+                <a href="{{ route('notifications.index') }}">Notifications</a>
+
             @else
                 <a href="{{ route('login') }}">Login</a>
             @endif

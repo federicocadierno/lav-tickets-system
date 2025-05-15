@@ -13,13 +13,15 @@ return new class extends Migration
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->string('name');
             $table->integer('type');
             $table->enum('mode_of_transport', ['air', 'land', 'sea'])->default('air');
             $table->string('product_to_import_export');
             $table->string('country_of_origin_destination');
-            $table->enum('status', ['new', 'in progress', 'completed'])->default('new');
+            $table->enum('status', ['new', 'in_progress', 'completed'])->default('new');
             $table->timestamps();
+            $table->foreign('user_id')->references('id')->on('users');
         });
     }
 

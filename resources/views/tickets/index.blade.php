@@ -8,9 +8,11 @@
                     <tr>
                         <th>ID</th>
                         <th>Name</th>
+                        <th>User</th>
                         <th>Type</th>
                         <th>Product</th>
                         <th>Country</th>
+                        <th>Documents</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -20,11 +22,20 @@
                         <tr>
                             <td>{{ $ticket->id }}</td>
                             <td>{{ $ticket->name }}</td>
-                            <td>{{ $ticket->user_id }}</td>
+                            <td>{{ $ticket->user->name }}</td>
                             <td>{{ $ticket->type }}</td>
                             <td>{{ $ticket->product_to_import_export }}</td>
                             <td>{{ $ticket->country_of_origin_destination }}</td>
-                            <td>{{ $ticket->status }}</td>
+                            <td>
+                                <ul>
+                                @foreach ($ticket->documents as $document) 
+                                    <li>
+                                        <a href="{{ route('tickets.download', $document->id) }}" class="btn btn-warning">Download</a>
+                                    </li>
+                                @endforeach
+                                </ul>
+                            </td> 
+                            <td>{{ $ticket->status}}</td>
                             <td>
                                 <a href="{{ route('tickets.edit', $ticket->id) }}" class="btn btn-warning">Edit</a>
 

@@ -12,11 +12,11 @@ class Documents extends Model
      * @var list<string>
      */
     protected $fillable = [
-        'doc_id',
+        'ticket_id',
         'doc_name'
     ];
 
-    public function item() {
+    public function ticket_docs() {
         return $this->belongsTo('App\Tickets');
     }
 
