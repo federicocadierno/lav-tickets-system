@@ -24,8 +24,17 @@
             <option value="in_progress"  @selected(old('status') ?? $ticket->status == 'in_progress')>In Progress</option>
             <option value="completed"  @selected(old('status') ?? $ticket->status == 'completed')>Completed</option>
         </select>
+        <label class="form-label">Notes</label>
+        <ul>
+        @foreach ($ticket->notes as $note) 
+            <li>
+                {{ $note->note }}
+            </li>
+        @endforeach
+        </ul>
         <label for="imagen" class="form-label">Document</label>
         <input class="form-control" type="file" name="document[]" multiple />
+        <a href="{{ route('tickets.claim-documents', $ticket->id) }}" class="btn btn-warning">Claim Documents</a>
         <button type="submit">Save</button>
     </form>
 

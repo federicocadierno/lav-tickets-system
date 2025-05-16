@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\SendNotification;
 use Illuminate\Http\Request;
-use App\Models\{Tickets, Documents, User};
+use App\Models\{Tickets, Documents, Notes, User};
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -102,10 +102,6 @@ class TicketsController extends Controller
           
         }
 
-
-                // call a job to create a notification
-        // pass the ticket id to the job and the status 
-
         SendNotification::dispatch($ticket,"Ticket Updated", false);
 
 
@@ -118,6 +114,21 @@ class TicketsController extends Controller
         $filename = $file->doc_name;
         return Storage::disk('public')->download($filename);      
 
+    }
+
+    public function note($id) {
+        $ticket = Tickets::findOrFail($id);
+        return view('tickets.notes', compact('ticket'));
+    }
+
+    public function storeNote(Request $request, $id) {
+        $ticket = Tickets::findOrFail($id);
+        Notes::create([
+            'ticket_id' => $ticket->id,
+            'note' => $request->note
+        ]);
+        SendNotification::dispatch($ticket,"Document Claimed", false);
+        return redirect()->route('tickets.index');
     }
 
     public function destroy(int $id){

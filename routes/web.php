@@ -47,6 +47,9 @@ Route::get('/tickets/{id}/edit', [TicketsController::class, 'edit'])->name('tick
 Route::delete('/tickets/{id}/delete', [TicketsController::class, 'destroy'])->name('tickets.delete');
 Route::get('/tickets/{id}/show', [TicketsController::class, 'show'])->name('tickets.show');
 Route::get('/tickets/{id}/download', [TicketsController::class, 'download'])->name('tickets.download');
+Route::get('/tickets/{id}/claim-documents', [TicketsController::class, 'claim-documents'])->name('tickets.claim-documents');
+Route::get('tickets/{id}/note', [TicketsController::class, 'note'])->name('tickets.note');
+Route::post('tickets/{id}/note', [TicketsController::class, 'storeNote'])->name('tickets.note.store');
 
 Route::get('/notifications', [\App\Http\Controllers\NotificationsController::class, 'notifications'])->name('notifications.index');
 Route::get('/notifications/{databaseNotification}', [\App\Http\Controllers\NotificationsController::class, 'notification'])->name('notifications.show');

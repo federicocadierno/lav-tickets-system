@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\User;
+use App\Models\{User, Notes};
 use Illuminate\Database\Eloquent\Model;
 
 class Tickets extends Model
@@ -31,6 +31,11 @@ class Tickets extends Model
     public function documents()
     {
         return $this->hasMany(Documents::class, 'ticket_id', 'id');
+    }
+
+    public function notes()
+    {
+        return $this->hasMany(Notes::class, 'ticket_id', 'id');
     }
 
 }

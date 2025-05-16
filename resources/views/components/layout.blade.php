@@ -22,7 +22,7 @@
             align-items: center;
             flex-direction: column
         }
-        form {
+        form:not(.logout) {
             display: flex;
             flex-direction: column;
             width: 60%;
@@ -34,6 +34,13 @@
             padding: 0;
             margin: 0;
             gap: 0 20px
+        }
+        .badge-pill {
+            background-color: #dc3545;
+            color: white;
+            padding: 3px 6px;
+            border-radius: 50%;
+            font-size: 12px;
         }
     </style> 
     <meta charset="UTF-8">
@@ -48,10 +55,15 @@
             @if(Auth::check())
                 <ul class="menu">
                     <li>
+                        <a class="nav-link"
+                        href="{{ action([\App\Http\Controllers\NotificationsController::class, 'notifications']) }}">
+                            <i class="icon-bell"></i>
+                            <span class="badge badge-pill badge-danger">{{ count($_notifications) }}</span>
+                        </a>
                         {{ Auth::user()->name }}
                     </li>
                     <li>
-                        <form method="POST" action="{{ route('logout') }}">
+                        <form class="logout" method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit" class="dropdown-item">
                                 <i class="fa fa-sign-out-alt"></i>
@@ -65,19 +77,17 @@
                     <li>
                         <a href="{{ route('tickets.index') }}">List of Ticket</a>        
                     </li>
-                
-                    <li class="nav-item d-md-down-none">
-                        <a class="nav-link"
-                        href="{{ action([\App\Http\Controllers\NotificationsController::class, 'notifications']) }}">
-                            <i class="icon-bell"></i>
-                            <span class="badge badge-pill badge-danger">{{ count($_notifications) }}</span>
-                        </a>
-                    </li>
+               
 
             @else
-                <a href="{{ route('login') }}">Login</a>
+                <li>
+                    <a href="{{ route('login') }}">Login</a>
+                </li>
+                <li>
+                    <a href="{{ route('register') }}">Register</a>
+                </li>
             @endif
-            <a href="{{ route('register') }}">Register</a>
+                </ul>
         </nav>
         {{ $slot }}
     </main>

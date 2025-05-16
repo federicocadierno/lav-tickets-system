@@ -5,16 +5,14 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                   
+                    <th>Notification Subject</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($notifications as $notification)
                     <tr>
-                        <td>{{ $notification->id }}</td>
-                        <td>{{ $notification->name }}</td>
+                        <td>{{ $notification->data['subject'] }}</td>
                         <td><a href="{{ action([\App\Http\Controllers\NotificationsController::class, 'notification'], $notification) }}"
                             class="mr-3">
                              <button class="btn btn-info btn-sm" type="button">Ver</button>

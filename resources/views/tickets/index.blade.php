@@ -13,6 +13,7 @@
                         <th>Product</th>
                         <th>Country</th>
                         <th>Documents</th>
+                        <th>Notes</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
@@ -35,15 +36,21 @@
                                 @endforeach
                                 </ul>
                             </td> 
+                            <td>
+                                <ul>
+                                @foreach ($ticket->notes as $note) 
+                                    <li>
+                                        {{ $note->note }}
+                                    </li>
+                                @endforeach
+                                </ul>
+                            </td> 
                             <td>{{ $ticket->status}}</td>
                             <td>
                                 <a href="{{ route('tickets.edit', $ticket->id) }}" class="btn btn-warning">Edit</a>
-
-                                <form action="{{ route('tickets.delete', $ticket) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-danger">Delete</button>
-                                </form>
+                                @if(auth()->user()->is_agent == 1)
+                                    <a href="{{ route('tickets.note', $ticket->id) }}" class="btn btn-warning">Claim Documents</a>                               
+                                @endif
                             </td>
                         </tr>
                     @endforeach

@@ -54,7 +54,7 @@ class Tickets extends Notification
             'ticket_type' => $this->ticket->type,
             'ticket_status' => $this->ticket->status,
             'user_id' => $this->ticket->user_id,
-            'subject' => 'New Ticket '.$this->subject,
+            'subject' => $this->subject,
         ];
     }
 }

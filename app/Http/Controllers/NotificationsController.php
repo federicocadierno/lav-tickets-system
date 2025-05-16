@@ -13,7 +13,11 @@ class NotificationsController extends Controller
     public function notifications() {
 
         $user = Auth::user();
-        $notifications = $user->unreadNotifications;
+        $notifications = [];
+        if($user) {
+            $notifications = $user->unreadNotifications;
+        }
+        
 
         
         return view('notifications.index', compact('notifications'));
